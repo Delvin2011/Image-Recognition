@@ -1,0 +1,18 @@
+.App {
+  text-align: center;
+}
+
+.centre {
+  display: flex;
+  justify-content: center;
+}
+
+/*makes sure everything is fixed*/
+.particles{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1; /*Tells you the layer you want for the backgrounds, Should be below everything else on the website*/
+}
