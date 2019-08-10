@@ -1,0 +1,39 @@
+1. Installation
+ - npx create-react-app facerecognition
+ - cd facerecognition
+ - npm start
+
+2. Removing Unnecessary files
+ - logo, in App.js
+
+3. Create Components folder
+ - Create Navigation component folder - create Navigation.js file.
+
+4. For CSS we are using tachyons
+ - npm install tachyons and then import it in index.js
+ - f3 link dim black underline pa3 pointer - check meaning.
+ - npm install --save react-tilt - https://github.com/jonathandion/react-tilt (React component for tilting images)
+
+ 4. Icons
+  - https://icons8.com/icons/set/brain
+
+5. Particles.js
+ - For having backgrounds that are interactive.
+ - They also have a react version. https://www.npmjs.com/package/react-particles-js
+ - npm install react-particles-js
+
+6. Face recognition API
+- clarifai - https://www.clarifai.com/
+- Install package - npm install clarifai
+- https://www.clarifai.com/models/face-detection-image-recognition-model-a403429f2ddf4b49b307e318f00e528b-detection
+- https://github.com/Clarifai/clarifai-javascript/blob/master/src/index.js - for models.
+
+7. Tachyons SignIn form
+- http://tachyons.io/components/forms/sign-in/index.html
+
+8. Tachyons Cards
+- http://tachyons.io/components/cards/product-card/index.html
+
+9. componentDidMount()
+ - is invoked immediately after a component is mounted (inserted into the tree). 
+ - Initialization that requires DOM nodes should go here. If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
