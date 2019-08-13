@@ -79,7 +79,7 @@ onInputChange = (event) => {
 onButtonSubmit = () => {
   
   this.setState({imageUrl: this.state.input});
-  fetch('http://localhost:3000/imageurl', {
+  fetch('https://safe-scrubland-47832.herokuapp.com/imageUrl', {
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
@@ -90,7 +90,7 @@ onButtonSubmit = () => {
     //using our API key and submiting image URL Clarifai.CELEBRITY_MODEL a403429f2ddf4b49b307e318f00e528b https://samples.clarifai.com/face-det.jpg
     .then(response => {
         if(response) {
-          fetch('http://localhost:3000/image', {
+          fetch('https://safe-scrubland-47832.herokuapp.com/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

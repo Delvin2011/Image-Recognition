@@ -26,7 +26,7 @@ onPasswordChange  = (event) => {
 
 onSubmitSignUp = () => {
     //event.preventDefault(); //https://www.w3schools.com/jquery/event_preventdefault.asp
-    fetch('http://localhost:3000/signup' , {
+    fetch('https://safe-scrubland-47832.herokuapp.com/signup' , {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
