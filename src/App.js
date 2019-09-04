@@ -159,7 +159,7 @@ onInputChange = (event) => {
 }
 
 onButtonSubmit = () => {
-  
+  const { ModelOption } = this.state;
   this.setState({imageUrl: this.state.input});
   fetch('https://safe-scrubland-47832.herokuapp.com/imageUrl', {
     method: 'post',
