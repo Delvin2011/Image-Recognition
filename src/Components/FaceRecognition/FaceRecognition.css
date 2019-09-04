@@ -1,0 +1,28 @@
+.bounding-box {
+    position: absolute;
+    box-shadow: 0 0 0 3px #149df2 inset;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    cursor: copy;
+  }
+
+  .bounding-box:hover {
+    border-color:0 0.5px 1px 4px #337ab7;
+  }
+
+  #con1{
+    box-shadow: 0 0 0 4px #f2c914 inset;
+  }
+
+  #con2{
+    box-shadow: 0 0 0 4px #f214af inset;
+  }
+
+  #con3{
+    box-shadow: 0 0 0 4px #14f239 inset;
+  }
+
+  #con4{
+    box-shadow: 0 0 0 4px #1487f2 inset;
+  }

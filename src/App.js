@@ -1,5 +1,4 @@
 import React from 'react';
-//import Clarifai from 'clarifai';
 import Navigation from './Components/Navigation/Navigation';
 import Logo from './Components/Logo/Logo';
 import ImageLinkForm from './Components/ImageLinkForm/ImageLinkForm';
@@ -7,6 +6,7 @@ import Rank from './Components/Rank/Rank';
 import Signin from './Components/Signin/Signin';
 import Signup from './Components/Signup/Signup';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
+import ConceptTable from './Components/ConceptTable/ConceptTable';
 import Particles from 'react-particles-js';
 import './App.css';
 
@@ -24,17 +24,12 @@ const particlesOptions = {
   }
 }; 
 
-
-//initialising the API key copied to server
-/*const app = new Clarifai.App({
-apiKey:'35c44e09a5874ee08cdd4ce1b71cfc8d'
-});*/
-
 const initialstate = {
       input:'',
       imageUrl:'',
       route: 'signin',
       isSignedIn: false,
+      box: {},
       user: {
         id:'',
         name: '',
@@ -42,15 +37,28 @@ const initialstate = {
         password:'',
         entries: 0,
         Joined: ''
-      }
+      },
+      ModelOption: null,
+      Models:[]
 }
-//route keeps tracks of where we are in the page
+const Models = [
+  { label: "Celebrity", value: "e466caa0619f444ab97497640cefc4dc" },
+  { label: "Demographics", value: "c0c0ac362b03416da06ab3fa36fb58e3" },
+  { label: "Fashion", value: "e0be3b9d6a454f0493ac3a30784001ff" },
+  { label: "Color", value: "eeed0b6733a644cea07cf4c60f87ebb7" },
+  { label: "Face Detection", value: "a403429f2ddf4b49b307e318f00e528b" },
+  { label: "General", value: "aaa03c23b3724a16a56b629203edc62c" },
+  { label: "Food", value: "bd367be194cf45149e75f01d59f77ba7" },
+  { label: "Moderation", value: "d16f390eb32cad478c7ae150069bd2c6" },
+  { label: "Travel", value: "eee28c313d69466f836ab83287a54ed9" },
+  { label: "NSFW", value: "e9576d86d2004ed1a38ba0cf39ecb4b1" },
+];
+
 class App extends React.Component {
   constructor(){
     super();
     this.state = initialstate;
   }
-
   loadUser = (data) =>{
     this.setState({user: {
         id:data.id,
@@ -63,14 +71,88 @@ class App extends React.Component {
       }
     })
   }
- /* componentDidMount() {
-    fetch('http://localhost:3000/')
-    .then(response => response.json())
-    .then(console.log)
-    //then(data => this.setState({ data }));
-  }*/
 
-//Property of the App
+  calculateFaceLocation = (data) => { //calculateFaceLocation
+      if(this.state.ModelOption.label === "Face Detection" || this.state.ModelOption.label === "Celebrity" || this.state.ModelOption.label === "Demographics") {
+        let clarifaiFace  = [];
+        const box = [];
+          for (let i=0; i < data.outputs[0].data.regions.length; i++)  {
+            clarifaiFace = data.outputs[0];  
+            const image = document.getElementById('inputimage');
+            const width = Number(image.width);
+            const height = Number(image.height);
+          
+            box.push({
+            leftCol: clarifaiFace.data.regions[i].region_info.bounding_box.left_col * width,
+            topRow: clarifaiFace.data.regions[i].region_info.bounding_box.top_row * height,
+            rightCol: width - (clarifaiFace.data.regions[i].region_info.bounding_box.right_col * width),
+            bottomRow: height - (clarifaiFace.data.regions[i].region_info.bounding_box.bottom_row * height) 
+            });
+          }
+          return box;
+        }
+      }
+
+  predictedConcept = (response) => {
+
+      if(this.state.ModelOption.label === "Celebrity"){
+        let clarifaiConcept = [];
+        const products = [];
+        let a = 0;
+        for (let i=0; i < response.outputs[0].data.regions.length; i++)  {
+          clarifaiConcept = response.outputs[0];
+          let fullname = clarifaiConcept.data.regions[i].data.concepts[0].name.split(" ");
+          a = i + 1;
+            var name = fullname[0].charAt(0).toUpperCase() + fullname[0].slice(1)  + " " + fullname[1].charAt(0).toUpperCase() + fullname[1].slice(1);
+          products.push({
+            category: "Concept: " + a,
+            name: name,
+            value: clarifaiConcept.data.regions[i].data.concepts[0].value.toFixed(3),
+          });
+        }
+      console.log(products);
+      return products;
+      }
+    
+      if(this.state.ModelOption.label === "NSFW" || this.state.ModelOption.label === "Fashion" || this.state.ModelOption.label === "General" || this.state.ModelOption.label === "Food" || this.state.ModelOption.label === "Moderation" || this.state.ModelOption.label === "Travel"){
+        let clarifaiConcept = [];
+        const products = [];
+        let a = 0;
+        for (let i=0; i < response.outputs[0].data.concepts.length; i++)  {
+          clarifaiConcept = response.outputs[0];
+          let fullname = clarifaiConcept.data.concepts[i].name;
+          a = i + 1;
+          var name2 = fullname;
+          products.push({
+            category: "Concept: " +  a,
+            name: name2,
+            value: clarifaiConcept.data.concepts[i].value.toFixed(3),
+          });
+          if (a === 5) { 
+            break;
+          } 
+        }
+      return products;
+      }
+    }
+
+  displayFaceBox = (box) => {
+      this.setState({box: box});
+    }
+  
+  displayPrediction = (products) => {
+      this.setState({products: products});
+    }
+  
+  componentDidMount() {
+      this.setState({Models: Models });
+    }
+  
+  handleChange = ModelOption => {
+      this.setState({ ModelOption: ModelOption });
+    };
+
+
 onInputChange = (event) => {
   console.log(event.target.value);
   this.setState({input: event.target.value})
@@ -83,7 +165,8 @@ onButtonSubmit = () => {
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
-    input: this.state.input
+    input: this.state.input,
+    Model: ModelOption.value
     })
 })
   .then(response => response.json())
@@ -102,11 +185,10 @@ onButtonSubmit = () => {
           this.setState(Object.assign(this.state.user, { entries: count}))
         });
       }
-       
-        //console.log(this.user.entries);
+      this.displayFaceBox(this.calculateFaceLocation(response));
+      this.displayPrediction(this.predictedConcept(response));
       },
       function(err) {
-        // there was an error
       }
     );
 }
@@ -122,7 +204,9 @@ onRouteChange = (route) => {
   this.setState({route: route})
 }
 
-  render() {
+render() {
+    const { products } = this.state;
+
     return (
       <div className="App">
         <Particles className = 'particles'
@@ -132,8 +216,17 @@ onRouteChange = (route) => {
           ? <div>
             <Logo />
             <Rank name={this.state.user.name} entries={this.state.user.entries}/>
-            <ImageLinkForm onInputChange = {this.onInputChange} onButtonSubmit = {this.onButtonSubmit}/>
-            <FaceRecognition imageUrl = {this.state.imageUrl}/>
+            <ImageLinkForm onInputChange = {this.onInputChange} onButtonSubmit = {this.onButtonSubmit} ModelOption = {this.handleChange} ModelField = {this.ModelOption}/>
+            <FaceRecognition imageUrl = {this.state.imageUrl} box = {this.state.box} ModelField = {this.state.ModelOption}/>
+            { typeof(this.state.products) === 'undefined' || (typeof(this.state.box) === 'undefined' && this.state.ModelOption.label === "Face Detection")
+                ? <div></div>
+
+				        : 
+                  (<div>
+                    <ConceptTable products = {products} ModelField = {this.state.ModelOption}/>
+                   
+                  </div>)
+              }	
             </div>
 
           :  (this.state.route === 'signin'
@@ -147,4 +240,3 @@ onRouteChange = (route) => {
 }
 export default App;
 
-//Can de-structure using  const {isSignedIn, imageRrl, route, box} = this.state

@@ -11,6 +11,9 @@ const Rank = ({name, entries}) => {
             <div className = 'white f1'>
                     {entries}
             </div>
+            <div className = 'dark-gray f2'>
+                {`Select Model & Insert Image URL...`}
+            </div>
         </div>
     );
 }
