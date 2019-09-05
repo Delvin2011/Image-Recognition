@@ -73,7 +73,7 @@ class App extends React.Component {
   }
 
   calculateFaceLocation = (data) => { //calculateFaceLocation
-      if(this.state.ModelOption.label === "Face Detection" || this.state.ModelOption.label === "Celebrity" || this.state.ModelOption.label === "Demographics") {
+      if((this.state.ModelOption.label === "Face Detection" || this.state.ModelOption.label === "Celebrity" || this.state.ModelOption.label === "Demographics") && typeof(data) != 'undefined') {
         let clarifaiFace  = [];
         const box = [];
           for (let i=0; i < data.outputs[0].data.regions.length; i++)  {
@@ -95,7 +95,7 @@ class App extends React.Component {
 
   predictedConcept = (response) => {
 
-      if(this.state.ModelOption.label === "Celebrity"){
+      if(this.state.ModelOption.label === "Celebrity"  && typeof(response) != 'undefined'){
         let clarifaiConcept = [];
         const products = [];
         let a = 0;
@@ -103,7 +103,7 @@ class App extends React.Component {
           clarifaiConcept = response.outputs[0];
           let fullname = clarifaiConcept.data.regions[i].data.concepts[0].name.split(" ");
           a = i + 1;
-            var name = fullname[0].charAt(0).toUpperCase() + fullname[0].slice(1)  + " " + fullname[1].charAt(0).toUpperCase() + fullname[1].slice(1);
+          var name = fullname[0].charAt(0).toUpperCase() + fullname[0].slice(1)  + " " + fullname[1].charAt(0).toUpperCase() + fullname[1].slice(1);
           products.push({
             category: "Concept: " + a,
             name: name,
@@ -114,7 +114,7 @@ class App extends React.Component {
       return products;
       }
     
-      if(this.state.ModelOption.label === "NSFW" || this.state.ModelOption.label === "Fashion" || this.state.ModelOption.label === "General" || this.state.ModelOption.label === "Food" || this.state.ModelOption.label === "Moderation" || this.state.ModelOption.label === "Travel"){
+      if((this.state.ModelOption.label === "NSFW" || this.state.ModelOption.label === "Fashion" || this.state.ModelOption.label === "General" || this.state.ModelOption.label === "Food" || this.state.ModelOption.label === "Moderation" || this.state.ModelOption.label === "Travel") && typeof(data) != 'undefined'){
         let clarifaiConcept = [];
         const products = [];
         let a = 0;
@@ -154,7 +154,6 @@ class App extends React.Component {
 
 
 onInputChange = (event) => {
-  console.log(event.target.value);
   this.setState({input: event.target.value})
 }
 
