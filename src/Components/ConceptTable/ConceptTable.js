@@ -56,8 +56,8 @@ class ProductCategoryRow extends React.Component {
 
       const rows = [];
       let lastCategory = null;
-      //console.log(this.props.products);
-     // console.log(this.props.ModelField);
+      console.log(this.props.products);
+     console.log(this.props.ModelField);
       this.props.products.forEach((product) => {
         if (product.category !== lastCategory) {
           rows.push(
