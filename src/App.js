@@ -115,7 +115,7 @@ class App extends React.Component {
       }
       console.log(response);
       console.log(this.state.ModelOption.label);
-      if((this.state.ModelOption.label === "NSFW" || this.state.ModelOption.label === "Fashion" || this.state.ModelOption.label === "General" || this.state.ModelOption.label === "Food" || this.state.ModelOption.label === "Moderation" || this.state.ModelOption.label === "Travel") && typeof(data) != 'undefined'){
+      if((this.state.ModelOption.label === "NSFW" || this.state.ModelOption.label === "Fashion" || this.state.ModelOption.label === "General" || this.state.ModelOption.label === "Food" || this.state.ModelOption.label === "Moderation" || this.state.ModelOption.label === "Travel") && typeof(response) != 'undefined'){
         let clarifaiConcept = [];
         const products = [];
         let a = 0;
