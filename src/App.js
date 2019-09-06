@@ -207,7 +207,7 @@ onRouteChange = (route) => {
 
 render() {
     const { products } = this.state;
-
+console.log(this.state.products);
     return (
       <div className="App">
         <Particles className = 'particles'
