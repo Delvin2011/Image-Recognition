@@ -187,6 +187,7 @@ onButtonSubmit = () => {
       this.displayFaceBox(this.calculateFaceLocation(response));
       this.displayPrediction(this.predictedConcept(response));
       console.log(response);
+      console.log(ModelOption.value);
       },
       function(err) {
       }
