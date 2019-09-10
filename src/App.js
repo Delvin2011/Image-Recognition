@@ -103,8 +103,12 @@ class App extends React.Component {
           clarifaiConcept = response.outputs[0];
           let fullname = clarifaiConcept.data.regions[i].data.concepts[0].name.split(" ");
           a = i + 1;
-          var name = fullname[0].charAt(0).toUpperCase() + fullname[0].slice(1)  + " " + fullname[1].charAt(0).toUpperCase() + fullname[1].slice(1);
-          products.push({
+          var name = "";
+          for (let x=0; x < fullname.length; x++){
+          //var name = fullname[0].charAt(0).toUpperCase() + fullname[0].slice(1)  + " " + fullname[1].charAt(0).toUpperCase() + fullname[1].slice(1);
+          var name = name + fullname[x].charAt(0).toUpperCase() + fullname[x].slice(1) + " ";
+          }
+        products.push({
             category: "Concept: " + a,
             name: name,
             value: clarifaiConcept.data.regions[i].data.concepts[0].value.toFixed(3),
